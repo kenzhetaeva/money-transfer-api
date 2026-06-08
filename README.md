@@ -1,5 +1,88 @@
-docker compose up -d
+## Quick Start
 
-docker compose exec php composer-install
+### Clone repository
 
-docker compose exec php php bin/console doctrine:migrations:migrate
+```bash
+git clone git@github.com:<your-username>/money-transfer-api.git
+cd money-transfer-api
+```
+
+### Start containers
+
+```bash
+make up
+```
+
+### Install dependencies
+
+```bash
+make composer
+```
+
+### Run migrations
+
+```bash
+make migrate
+```
+
+Application will be available at:
+
+```text
+http://localhost:8080
+```
+
+## Available Commands
+
+### Start project
+
+```bash
+make up
+```
+
+### Stop project
+
+```bash
+make down
+```
+
+### Rebuild containers
+
+```bash
+make build
+```
+
+### View logs
+
+```bash
+make logs
+```
+
+### Enter PHP container
+
+```bash
+make bash
+```
+
+### Install Composer dependencies
+
+```bash
+make composer
+```
+
+### Run migrations
+
+```bash
+make migrate
+```
+
+### Recreate database
+
+```bash
+make fresh
+```
+
+### Run tests
+
+```bash
+make test
+```
