@@ -1,0 +1,15 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Money Transfer API
+            description: REST API for money transfers between accounts
+            version: 1.0.0
+
+        servers:
+            - url: http://localhost:8081
+              description: Local environment
+
+    areas:
+        default:
+            path_patterns:
+                - ^/api

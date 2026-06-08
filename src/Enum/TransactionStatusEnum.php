@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Transaction;
-
-use App\Entity\Enum;
+namespace App\Enum;
 
 /**
  * @method static TransactionStatusEnum COMPLETED()
