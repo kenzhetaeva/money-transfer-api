@@ -3,7 +3,7 @@
 ### Clone repository
 
 ```bash
-git clone git@github.com:<your-username>/money-transfer-api.git
+git clone git@github.com:kenzhetaeva/money-transfer-api.git
 cd money-transfer-api
 ```
 
