@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Entity\Account;
+namespace App\Entity;
 
-use App\Entity\User\User;
+use App\Enum\CurrencyEnum;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Account
 {
@@ -17,6 +19,10 @@ class Account
 
     private DateTimeImmutable $createdAt;
 
+    private Collection $outgoingTransactions;
+
+    private Collection $incomingTransactions;
+
     public function __construct(
         User $user,
         CurrencyEnum $currency,
@@ -27,6 +33,8 @@ class Account
         $this->currency = $currency;
         $this->balance = $balance;
         $this->createdAt = $createdAt;
+        $this->outgoingTransactions = new ArrayCollection();
+        $this->incomingTransactions = new ArrayCollection();
     }
 
     public function getId(): int
@@ -52,5 +60,15 @@ class Account
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getOutgoingTransactions(): Collection
+    {
+        return $this->outgoingTransactions;
+    }
+
+    public function getIncomingTransactions(): Collection
+    {
+        return $this->incomingTransactions;
     }
 }

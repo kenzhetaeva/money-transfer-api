@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity\Transaction;
+namespace App\Entity;
 
-use App\Entity\Account\Account;
+use App\Enum\TransactionStatusEnum;
 use DateTimeImmutable;
 
 class Transaction

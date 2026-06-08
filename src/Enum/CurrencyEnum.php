@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Account;
+namespace App\Enum;
 
 /**
- * @method static CurrencyEnum COMPLETED()
- * @method static CurrencyEnum PENDING()
- * @method static CurrencyEnum FAILED()
+ * @method static CurrencyEnum USD()
+ * @method static CurrencyEnum EUR()
+ * @method static CurrencyEnum KGS()
  */
 class CurrencyEnum extends Enum
 {
