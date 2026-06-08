@@ -1,4 +1,4 @@
-.PHONY: up down restart build logs bash composer install migrate fresh test
+.PHONY: up down restart composer install migrate test
 
 up:
 	docker compose up -d
@@ -10,15 +10,6 @@ restart:
 	docker compose down
 	docker compose up -d
 
-build:
-	docker compose build
-
-logs:
-	docker compose logs -f
-
-bash:
-	docker compose exec php bash
-
 composer:
 	docker compose exec php composer install
 
@@ -27,11 +18,6 @@ install:
 	docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
 
 migrate:
-	docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
-
-fresh:
-	docker compose exec php php bin/console doctrine:database:drop --force --if-exists
-	docker compose exec php php bin/console doctrine:database:create
 	docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
 
 test:

@@ -45,22 +45,10 @@ make up
 make down
 ```
 
-### Rebuild containers
+### Restart project
 
 ```bash
-make build
-```
-
-### View logs
-
-```bash
-make logs
-```
-
-### Enter PHP container
-
-```bash
-make bash
+make restart
 ```
 
 ### Install Composer dependencies
@@ -73,12 +61,6 @@ make composer
 
 ```bash
 make migrate
-```
-
-### Recreate database
-
-```bash
-make fresh
 ```
 
 ### Run tests
