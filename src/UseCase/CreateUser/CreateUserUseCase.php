@@ -7,8 +7,6 @@ namespace App\UseCase\CreateUser;
 use App\Entity\User;
 use App\Exception\DuplicatedEmailException;
 use App\Repository\Users\UsersRepositoryInterface;
-use App\DTO\UserDTO;
-use DateTimeImmutable;
 
 class CreateUserUseCase
 {
@@ -33,10 +31,9 @@ class CreateUserUseCase
         $user = new User(
             $command->getName(),
             $command->getEmail(),
-            new DateTimeImmutable(),
         );
         $this->usersRepository->createUser($user);
-        $dto = UserDTO::fromEntity($user);
-        return new CreateUserResult($dto);
+
+        return new CreateUserResult($user);
     }
 }

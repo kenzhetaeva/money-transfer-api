@@ -15,7 +15,7 @@ class Account
 
     private CurrencyEnum $currency;
 
-    private string $balance;
+    private float $balance;
 
     private DateTimeImmutable $createdAt;
 
@@ -26,7 +26,7 @@ class Account
     public function __construct(
         User $user,
         CurrencyEnum $currency,
-        string $balance,
+        float $balance,
         DateTimeImmutable $createdAt = new DateTimeImmutable()
     ) {
         $this->user = $user;
@@ -52,7 +52,7 @@ class Account
         return $this->currency;
     }
 
-    public function getBalance(): string
+    public function getBalance(): float
     {
         return $this->balance;
     }

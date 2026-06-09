@@ -10,6 +10,8 @@ use App\UseCase\CreateUser\CreateUserCommand;
 use App\UseCase\CreateUser\CreateUserUseCase;
 use App\UseCase\GetUser\GetUserCommand;
 use App\UseCase\GetUser\GetUserUseCase;
+use App\UseCase\GetUserAccounts\GetUserAccountsCommand;
+use App\UseCase\GetUserAccounts\GetUserAccountsUseCase;
 use App\Validation\CreateUserValidator;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -24,6 +26,7 @@ final class UserController extends AbstractController
     public function __construct(
         private CreateUserUseCase $createUserUseCase,
         private GetUserUseCase $getUserUseCase,
+        private GetUserAccountsUseCase $getUserAccountsUseCase,
         private LoggerInterface $logger,
     ) {}
 
@@ -66,27 +69,11 @@ final class UserController extends AbstractController
         }
     }
 
-
-    #[Route('/user', methods: ['GET'])]
-    public function getUserById(Request $request): JsonResponse
+    #[Route('/users/{id}', methods: ['GET'])]
+    public function getUserById(int $id): JsonResponse
     {
         try {
-            $userId = $request->query->get('id');
-
-            if (!$userId) {
-                return new JsonResponse(
-                    ['error' => 'Missing required parameter: id'],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-            if (!is_numeric($userId)) {
-                return new JsonResponse(
-                    ['error' => 'Parameter \'id\' must be numeric'],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $result = $this->getUserUseCase->execute(new GetUserCommand((int)$userId));
+            $result = $this->getUserUseCase->execute(new GetUserCommand($id));
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (UserNotFoundException $e) {
             return new JsonResponse(
@@ -100,7 +87,34 @@ final class UserController extends AbstractController
             $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
-                    'error' => 'An error occurred while creating the user',
+                    'error' => 'An error occurred while retrieving the user',
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    #[Route('/users/{id}/accounts', methods: ['GET'])]
+    public function getUserAccounts(int $id): JsonResponse
+    {
+        try {
+            $result = $this->getUserAccountsUseCase->execute(new GetUserAccountsCommand($id));
+            return new JsonResponse($result, Response::HTTP_OK);
+        } catch (UserNotFoundException $e) {
+            return new JsonResponse(
+                [
+                    'error' => 'User not found',
+                    'message' => $e->getMessage(),
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        } catch (Exception $e) {
+            $this->logger->error('Exception occurred', ['exception' => $e]);
+            return new JsonResponse(
+                [
+                    'error' => 'An error occurred while retrieving user accounts',
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ],

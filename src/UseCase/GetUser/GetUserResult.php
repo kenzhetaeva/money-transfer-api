@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UseCase\GetUser;
 
-use App\DTO\UserDTO;
+use App\Entity\User;
 use DateTimeImmutable;
 use JsonSerializable;
 
@@ -55,12 +55,12 @@ class GetUserResult implements JsonSerializable
      */
     private $createdAt;
 
-    public function __construct(UserDTO $userDto)
+    public function __construct(User $user)
     {
-        $this->id = $userDto->getId();
-        $this->name = $userDto->getName();
-        $this->email = $userDto->getEmail();
-        $this->createdAt = $userDto->getCreatedAt();
+        $this->id = $user->getId();
+        $this->name = $user->getName();
+        $this->email = $user->getEmail();
+        $this->createdAt = $user->getCreatedAt();
     }
 
     public function getId(): int
