@@ -8,5 +8,9 @@ use App\Entity\User;
 
 interface UsersRepositoryInterface
 {
+    public function findById(int $id): ?User;
+
+    public function findByEmail(string $email): ?User;
+
     public function createUser(User $user);
 }
