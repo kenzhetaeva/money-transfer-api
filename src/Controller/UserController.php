@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\UseCase\User\CreateUserCommand;
-use App\UseCase\User\CreateUserUseCase;
+use App\Exception\DuplicatedEmailException;
+use App\Exception\UserNotFoundException;
+use App\UseCase\CreateUser\CreateUserCommand;
+use App\UseCase\CreateUser\CreateUserUseCase;
+use App\UseCase\GetUser\GetUserCommand;
+use App\UseCase\GetUser\GetUserUseCase;
 use App\Validation\CreateUserValidator;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -14,13 +18,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Annotations as OA;
-use OpenApi\Annotations\Post;
 
 final class UserController extends AbstractController
 {
     public function __construct(
-        private CreateUserUseCase $useCase,
+        private CreateUserUseCase $createUserUseCase,
+        private GetUserUseCase $getUserUseCase,
         private LoggerInterface $logger,
     ) {}
 
@@ -37,13 +40,64 @@ final class UserController extends AbstractController
                     Response::HTTP_BAD_REQUEST
                 );
             }
-            $this->useCase->execute(new CreateUserCommand(
+            $result = $this->createUserUseCase->execute(new CreateUserCommand(
                 $validator->getValue("name"),
                 $validator->getValue("email")
             ));
+            return new JsonResponse($result, Response::HTTP_CREATED);
+        } catch (DuplicatedEmailException $e) {
+            $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
-                ['message' => 'User created successfully'],
-                Response::HTTP_CREATED
+                [
+                    'error' => 'User duplicated by email',
+                    'message' => $e->getMessage(),
+                ],
+                Response::HTTP_CONFLICT
+            );
+        } catch (Exception $e) {
+            $this->logger->error('Exception occurred', ['exception' => $e]);
+            return new JsonResponse(
+                [
+                    'error' => 'An error occurred while creating the user',
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+
+    #[Route('/user', methods: ['GET'])]
+    public function getUserById(Request $request): JsonResponse
+    {
+        try {
+            $userId = $request->query->get('id');
+
+            if (!$userId) {
+                return new JsonResponse(
+                    ['error' => 'Missing required parameter: id'],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+            if (!is_numeric($userId)) {
+                return new JsonResponse(
+                    ['error' => 'Parameter \'id\' must be numeric'],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            $result = $this->getUserUseCase->execute(new GetUserCommand((int)$userId));
+            return new JsonResponse($result, Response::HTTP_OK);
+        } catch (UserNotFoundException $e) {
+            $this->logger->error('Exception occurred', ['exception' => $e]);
+            return new JsonResponse(
+                [
+                    'error' => 'User not found',
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ],
+                Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
             $this->logger->error('Exception occurred', ['exception' => $e]);
