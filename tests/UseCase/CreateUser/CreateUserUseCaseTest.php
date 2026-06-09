@@ -19,7 +19,7 @@ class CreateUserUseCaseTest extends TestCase
         $name = 'John Doe';
         $email = 'test@example.com';
 
-        $existingUser = new User($name, $email, new DateTimeImmutable());
+        $existingUser = new User($name, $email);
 
         $usersRepository = $this->createMock(UsersRepositoryInterface::class);
         $usersRepository->expects($this->once())

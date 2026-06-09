@@ -45,4 +45,21 @@ abstract class Enum
     {
         return $this->value === $enum->value && static::class === $enum::class;
     }
+
+    public static function from(string $value): self
+    {
+        return new static($value);
+    }
+
+    public static function toArray(): array
+    {
+        $reflection = new ReflectionClass(static::class);
+        $constants = $reflection->getConstants();
+        $result = [];
+        foreach ($constants as $name => $value) {
+            $result[$name] = $value;
+        }
+
+        return $result;
+    }
 }

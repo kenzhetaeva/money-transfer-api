@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\GetUser;
+namespace App\UseCase\GetUserAccounts;
 
-use App\Entity\User;
+use App\Entity\Account;
 use DateTimeImmutable;
 use JsonSerializable;
 
@@ -13,7 +13,7 @@ use JsonSerializable;
  *     schema="GetUserResponse"
  * )
  */
-class GetUserResult implements JsonSerializable
+class GetUserAccountsResult implements JsonSerializable
 {
     /**
      * @OA\Property(
@@ -55,12 +55,12 @@ class GetUserResult implements JsonSerializable
      */
     private $createdAt;
 
-    public function __construct(User $user)
+    public function __construct(Account $userDto)
     {
-        $this->id = $user->getId();
-        $this->name = $user->getName();
-        $this->email = $user->getEmail();
-        $this->createdAt = $user->getCreatedAt();
+        $this->id = $userDto->getId();
+        $this->name = $userDto->getName();
+        $this->email = $userDto->getEmail();
+        $this->createdAt = $userDto->getCreatedAt();
     }
 
     public function getId(): int

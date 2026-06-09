@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-/**
- * @method static CurrencyEnum USD()
- * @method static CurrencyEnum EUR()
- * @method static CurrencyEnum KGS()
- */
-class CurrencyEnum extends Enum
+enum CurrencyEnum: string
 {
-    private const USD = 'USD';
-    private const EUR = 'EUR';
-    private const KGS = 'KGS';
+    case USD = 'USD';
+    case EUR = 'EUR';
+    case KGS = 'KGS';
 }

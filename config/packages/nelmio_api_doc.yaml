@@ -36,7 +36,6 @@ nelmio_api_doc:
                         500:
                             description: Internal server error
 
-            /user:
                 get:
                     summary: Get user by ID
                     operationId: getUser
@@ -128,5 +127,4 @@ nelmio_api_doc:
         default:
             path_patterns:
                 - ^/api
-                - ^/user
                 - ^/users

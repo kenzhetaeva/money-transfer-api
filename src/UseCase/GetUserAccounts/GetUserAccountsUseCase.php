@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\GetUser;
+namespace App\UseCase\GetUserAccounts;
 
 use App\Exception\UserNotFoundException;
 use App\Repository\Users\UsersRepositoryInterface;
 
-class GetUserUseCase
+class GetUserAccountsUseCase
 {
     private $usersRepository;
 
@@ -20,7 +20,7 @@ class GetUserUseCase
     /**
      * @throws UserNotFoundException
      */
-    public function execute(GetUserCommand $command): GetUserResult
+    public function execute(GetUserAccountsCommand $command): GetUserAccountsResult
     {
         $user = $this->usersRepository->findById($command->getId());
 
@@ -28,6 +28,6 @@ class GetUserUseCase
             throw UserNotFoundException::create($command->getId());
         }
 
-        return new GetUserResult($user);
+        return new GetUserAccountsResult($user);
     }
 }
