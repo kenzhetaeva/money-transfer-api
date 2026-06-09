@@ -10,5 +10,10 @@ interface AccountsRepositoryInterface
 {
     public function findById(int $id): ?Account;
 
+    /**
+     * @return Account[]
+     */
+    public function getByUserId(int $userId): array;
+
     public function createAccount(Account $account);
 }

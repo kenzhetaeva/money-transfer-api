@@ -70,27 +70,11 @@ final class AccountController extends AbstractController
         }
     }
 
-
-    #[Route('/accounts', methods: ['GET'])]
-    public function getAccountById(Request $request): JsonResponse
+    #[Route('/accounts/{id}', methods: ['GET'])]
+    public function getAccountById(int $id): JsonResponse
     {
         try {
-            $accountId = $request->query->get('id');
-
-            if (!$accountId) {
-                return new JsonResponse(
-                    ['error' => 'Missing required parameter: id'],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-            if (!is_numeric($accountId)) {
-                return new JsonResponse(
-                    ['error' => 'Parameter \'id\' must be numeric'],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $result = $this->getAccountUseCase->execute(new GetAccountCommand((int)$accountId));
+            $result = $this->getAccountUseCase->execute(new GetAccountCommand($id));
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(

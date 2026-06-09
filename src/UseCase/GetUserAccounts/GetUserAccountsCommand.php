@@ -6,7 +6,7 @@ namespace App\UseCase\GetUserAccounts;
 
 /**
  * @OA\Schema(
- *     schema="GetUserRequest"
+ *     schema="GetUserAccountsRequest"
  * )
  */
 class GetUserAccountsCommand
