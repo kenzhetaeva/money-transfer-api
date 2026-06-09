@@ -9,7 +9,124 @@ nelmio_api_doc:
             - url: http://localhost:8081
               description: Local environment
 
+        paths:
+            /users:
+                post:
+                    summary: Create user
+                    operationId: createUser
+                    tags:
+                        - Users
+                    requestBody:
+                        required: true
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/CreateUserRequest'
+                    responses:
+                        201:
+                            description: User created successfully
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/CreateUserResponse'
+                        400:
+                            description: Bad request - validation error
+                        409:
+                            description: Conflict - email already exists
+                        500:
+                            description: Internal server error
+
+            /user:
+                get:
+                    summary: Get user by ID
+                    operationId: getUser
+                    tags:
+                        - Users
+                    parameters:
+                        - name: id
+                          in: query
+                          required: true
+                          schema:
+                              type: integer
+                          description: User ID
+                    responses:
+                        200:
+                            description: User found
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/GetUserResponse'
+                        400:
+                            description: Bad request - missing or invalid id parameter
+                        404:
+                            description: User not found
+                        500:
+                            description: Internal server error
+
+        components:
+            schemas:
+                CreateUserRequest:
+                    type: object
+                    properties:
+                        name:
+                            type: string
+                            description: User name
+                            example: John Doe
+                        email:
+                            type: string
+                            description: User email
+                            example: johndoe@gmail.com
+                    required:
+                        - name
+                        - email
+
+                CreateUserResponse:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            description: User ID
+                            example: 1
+                        name:
+                            type: string
+                            description: User name
+                            example: John Doe
+                        email:
+                            type: string
+                            description: User email
+                            example: johndoe@gmail.com
+                        createdAt:
+                            type: string
+                            description: User creation date
+                            example: "2026-06-09 10:30:45"
+
+                GetUserResponse:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            description: User ID
+                            example: 1
+                        name:
+                            type: string
+                            description: User name
+                            example: John Doe
+                        email:
+                            type: string
+                            description: User email
+                            example: johndoe@gmail.com
+                        createdAt:
+                            type: string
+                            description: User creation date
+                            example: "2026-06-09 10:30:45"
+
+            tags:
+                - name: Users
+                  description: User management endpoints
+
     areas:
         default:
             path_patterns:
                 - ^/api
+                - ^/user
+                - ^/users

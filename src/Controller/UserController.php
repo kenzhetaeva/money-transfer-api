@@ -46,7 +46,6 @@ final class UserController extends AbstractController
             ));
             return new JsonResponse($result, Response::HTTP_CREATED);
         } catch (DuplicatedEmailException $e) {
-            $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
                     'error' => 'User duplicated by email',
@@ -90,12 +89,10 @@ final class UserController extends AbstractController
             $result = $this->getUserUseCase->execute(new GetUserCommand((int)$userId));
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (UserNotFoundException $e) {
-            $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
                     'error' => 'User not found',
                     'message' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
                 ],
                 Response::HTTP_NOT_FOUND
             );
