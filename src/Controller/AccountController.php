@@ -88,7 +88,7 @@ final class AccountController extends AbstractController
             $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
-                    'error' => 'An error occurred while creating the user',
+                    'error' => 'An error occurred while retrieving account',
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ],

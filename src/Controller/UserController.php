@@ -87,7 +87,7 @@ final class UserController extends AbstractController
             $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
-                    'error' => 'An error occurred while creating the user',
+                    'error' => 'An error occurred while retrieving the user',
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ],
@@ -114,7 +114,7 @@ final class UserController extends AbstractController
             $this->logger->error('Exception occurred', ['exception' => $e]);
             return new JsonResponse(
                 [
-                    'error' => 'An error occurred while creating the user',
+                    'error' => 'An error occurred while retrieving user accounts',
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ],
