@@ -13,8 +13,8 @@ class CreateAccountValidator extends RequestValidation
     {
         $this->constraint = new Assert\Collection([
             'userId' => [
-                new Assert\NotBlank(),
                 new Assert\Type(type: 'integer'),
+                new Assert\GreaterThan(value: 0),
             ],
             'currency' => [
                 new Assert\NotBlank(),

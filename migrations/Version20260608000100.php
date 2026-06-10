@@ -28,6 +28,10 @@ final class Version20260608085447 extends AbstractMigration
             CREATE TYPE transaction_status_enum AS ENUM ('pending', 'completed', 'failed')
         ");
 
+        $this->addSql("
+            CREATE TYPE transaction_type_enum AS ENUM ('deposit', 'withdraw', 'transfer');
+        ");
+
         // =========================
         // USERS
         // =========================
@@ -74,9 +78,10 @@ final class Version20260608085447 extends AbstractMigration
         $this->addSql("
             CREATE TABLE transactions (
                 id SERIAL PRIMARY KEY,
-                from_account_id INTEGER NOT NULL,
-                to_account_id INTEGER NOT NULL,
+                from_account_id INTEGER NULL,
+                to_account_id INTEGER NULL,
                 amount NUMERIC(18,2) NOT NULL,
+                type transaction_type_enum NOT NULL,
                 status transaction_status_enum NOT NULL,
                 created_at TIMESTAMP NOT NULL,
                 CONSTRAINT fk_transactions_from_account
