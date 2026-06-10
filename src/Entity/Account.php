@@ -57,6 +57,11 @@ class Account
         return $this->balance;
     }
 
+    public function setBalance(float $balance): void
+    {
+        $this->balance = $balance;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;

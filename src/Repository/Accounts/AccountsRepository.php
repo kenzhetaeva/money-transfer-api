@@ -38,4 +38,10 @@ class AccountsRepository implements AccountsRepositoryInterface
         $this->entityManager->persist($account);
         $this->entityManager->flush();
     }
+
+    public function updateAccount(Account $account): void
+    {
+        $this->entityManager->persist($account);
+        $this->entityManager->flush();
+    }
 }

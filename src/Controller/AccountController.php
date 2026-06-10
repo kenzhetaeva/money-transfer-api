@@ -9,9 +9,12 @@ use App\Exception\AccountNotFoundException;
 use App\Exception\UserNotFoundException;
 use App\UseCase\CreateAccount\CreateAccountCommand;
 use App\UseCase\CreateAccount\CreateAccountUseCase;
+use App\UseCase\CreateDeposit\CreateDepositCommand;
+use App\UseCase\CreateDeposit\CreateDepositUseCase;
 use App\UseCase\GetAccount\GetAccountCommand;
 use App\UseCase\GetAccount\GetAccountUseCase;
 use App\Validation\CreateAccountValidator;
+use App\Validation\CreateDepositValidator;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +28,7 @@ final class AccountController extends AbstractController
     public function __construct(
         private CreateAccountUseCase $createAccountUseCase,
         private GetAccountUseCase $getAccountUseCase,
+        private CreateDepositUseCase $createDepositUseCase,
         private LoggerInterface $logger,
     ) {}
 
@@ -89,6 +93,45 @@ final class AccountController extends AbstractController
             return new JsonResponse(
                 [
                     'error' => 'An error occurred while retrieving account',
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    #[Route('/accounts/{id}/deposit', methods: ['POST'])]
+    public function createDeposit(int $id, Request $request): JsonResponse
+    {
+        try {
+            $requestData = $request->toArray();
+
+            $validator = new CreateDepositValidator($requestData);
+            if (!$validator->isValid()) {
+                return new JsonResponse(
+                    ['errors' => $validator->getErrors()],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+            $result = $this->createDepositUseCase->execute(new CreateDepositCommand(
+                $id,
+                $validator->getValue("amount"),
+            ));
+            return new JsonResponse($result, Response::HTTP_OK);
+        } catch (AccountNotFoundException $e) {
+            return new JsonResponse(
+                [
+                    'error' => 'Account not found',
+                    'message' => $e->getMessage(),
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        } catch (Exception $e) {
+            $this->logger->error('Exception occurred', ['exception' => $e]);
+            return new JsonResponse(
+                [
+                    'error' => 'An error occurred while creating the deposit',
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ],

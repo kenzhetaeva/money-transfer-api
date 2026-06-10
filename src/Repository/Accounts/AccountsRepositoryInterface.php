@@ -16,4 +16,6 @@ interface AccountsRepositoryInterface
     public function getByUserId(int $userId): array;
 
     public function createAccount(Account $account);
+
+    public function updateAccount(Account $account);
 }
