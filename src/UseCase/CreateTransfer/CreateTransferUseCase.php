@@ -9,6 +9,7 @@ use App\Enum\TransactionStatusEnum;
 use App\Enum\TransactionTypeEnum;
 use App\Exception\AccountNotFoundException;
 use App\Exception\InsufficientBalanceException;
+use App\Exception\InvalidAccountsException;
 use App\Repository\Accounts\AccountsRepositoryInterface;
 use App\Repository\Transactions\TransactionsRepositoryInterface;
 use DateTimeImmutable;
@@ -27,11 +28,16 @@ class CreateTransferUseCase
     }
 
     /**
+     * @throws InvalidAccountsException
      * @throws AccountNotFoundException
      * @throws InsufficientBalanceException
      */
     public function execute(CreateTransferCommand $command): CreateTransferResult
     {
+        if ($command->getFromAccountId() === $command->getToAccountId()) {
+            throw InvalidAccountsException::create();
+        }
+
         $fromAccount = $this->accountsRepository->findById($command->getFromAccountId());
         if (null === $fromAccount) {
             throw AccountNotFoundException::create($command->getFromAccountId());

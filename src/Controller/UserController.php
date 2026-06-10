@@ -50,10 +50,7 @@ final class UserController extends AbstractController
             return new JsonResponse($result, Response::HTTP_CREATED);
         } catch (DuplicatedEmailException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'User duplicated by email',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_CONFLICT
             );
         } catch (Exception $e) {
@@ -77,10 +74,7 @@ final class UserController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (UserNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'User not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
@@ -104,10 +98,7 @@ final class UserController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (UserNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'User not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {

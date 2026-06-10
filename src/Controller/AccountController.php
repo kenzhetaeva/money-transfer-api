@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Enum\CurrencyEnum;
 use App\Exception\AccountNotFoundException;
 use App\Exception\InsufficientBalanceException;
+use App\Exception\InvalidAccountsException;
 use App\Exception\UserNotFoundException;
 use App\UseCase\CreateAccount\CreateAccountCommand;
 use App\UseCase\CreateAccount\CreateAccountUseCase;
@@ -64,10 +65,7 @@ final class AccountController extends AbstractController
             return new JsonResponse($result, Response::HTTP_CREATED);
         } catch (UserNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'User not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
@@ -91,10 +89,7 @@ final class AccountController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Account not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
@@ -132,10 +127,7 @@ final class AccountController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Account not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
@@ -173,18 +165,12 @@ final class AccountController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Account not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (InsufficientBalanceException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Insufficient balance',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_BAD_REQUEST
             );
         } catch (Exception $e) {
@@ -223,18 +209,17 @@ final class AccountController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Account not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (InsufficientBalanceException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Insufficient balance',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        } catch (InvalidAccountsException $e) {
+            return new JsonResponse(
+                ['error' => $e->getMessage()],
                 Response::HTTP_BAD_REQUEST
             );
         } catch (Exception $e) {
