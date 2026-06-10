@@ -29,10 +29,7 @@ final class TransactionController extends AbstractController
             return new JsonResponse($result, Response::HTTP_OK);
         } catch (AccountNotFoundException $e) {
             return new JsonResponse(
-                [
-                    'error' => 'Account not found',
-                    'message' => $e->getMessage(),
-                ],
+                ['error' => $e->getMessage()],
                 Response::HTTP_NOT_FOUND
             );
         } catch (Exception $e) {
