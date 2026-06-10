@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-/**
- * @method static TransactionStatusEnum COMPLETED()
- * @method static TransactionStatusEnum PENDING()
- * @method static TransactionStatusEnum FAILED()
- */
-class TransactionStatusEnum extends Enum
+enum TransactionStatusEnum: string
 {
-    private const COMPLETED = 'completed';
-    private const PENDING = 'pending';
-    private const FAILED = 'failed';
+    case COMPLETED = 'completed';
+    case PENDING = 'pending';
+    case FAILED = 'failed';
 }

@@ -3,33 +3,38 @@
 namespace App\Entity;
 
 use App\Enum\TransactionStatusEnum;
+use App\Enum\TransactionTypeEnum;
 use DateTimeImmutable;
 
 class Transaction
 {
     private int $id;
 
-    private Account $fromAccount;
+    private ?Account $fromAccount;
 
-    private Account $toAccount;
+    private ?Account $toAccount;
 
-    private string $amount;
+    private float $amount;
 
     private TransactionStatusEnum $status;
+
+    private TransactionTypeEnum $type;
 
     private DateTimeImmutable $createdAt;
 
     public function __construct(
-        Account $fromAccount,
-        Account $toAccount,
-        string $amount,
+        float                 $amount,
         TransactionStatusEnum $status,
-        DateTimeImmutable $createdAt = new DateTimeImmutable()
+        TransactionTypeEnum   $type,
+        DateTimeImmutable     $createdAt = new DateTimeImmutable(),
+        ?Account              $fromAccount = null,
+        ?Account              $toAccount = null,
     ) {
         $this->fromAccount = $fromAccount;
         $this->toAccount = $toAccount;
         $this->amount = $amount;
         $this->status = $status;
+        $this->type = $type;
         $this->createdAt = $createdAt;
     }
 
@@ -38,17 +43,17 @@ class Transaction
         return $this->id;
     }
 
-    public function getFromAccount(): Account
+    public function getFromAccount(): ?Account
     {
         return $this->fromAccount;
     }
 
-    public function getToAccount(): Account
+    public function getToAccount(): ?Account
     {
         return $this->toAccount;
     }
 
-    public function getAmount(): string
+    public function getAmount(): float
     {
         return $this->amount;
     }
@@ -56,6 +61,11 @@ class Transaction
     public function getStatus(): TransactionStatusEnum
     {
         return $this->status;
+    }
+
+    public function getType(): TransactionTypeEnum
+    {
+        return $this->type;
     }
 
     public function getCreatedAt(): DateTimeImmutable

@@ -10,15 +10,16 @@
         </id>
 
         <many-to-one field="fromAccount" target-entity="App\Entity\Account" inversed-by="outgoingTransactions">
-            <join-column name="from_account_id" referenced-column-name="id" nullable="false"/>
+            <join-column name="from_account_id" referenced-column-name="id"/>
         </many-to-one>
 
         <many-to-one field="toAccount" target-entity="App\Entity\Account" inversed-by="incomingTransactions">
-            <join-column name="to_account_id" referenced-column-name="id" nullable="false"/>
+            <join-column name="to_account_id" referenced-column-name="id"/>
         </many-to-one>
 
         <field name="amount" type="decimal" precision="18" scale="2" column="amount" />
-        <field name="status" type="string" length="20" column="status" />
+        <field name="status" enum-type="App\Enum\TransactionStatusEnum" column="status" />
+        <field name="type" enum-type="App\Enum\TransactionTypeEnum" column="type" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
     </entity>
 </doctrine-mapping>
