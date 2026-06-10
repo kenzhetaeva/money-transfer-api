@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\GetAccount;
+namespace App\UseCase\CreateDeposit;
 
 use App\DTO\AccountDTO;
 use App\Entity\Account;
@@ -10,10 +10,10 @@ use JsonSerializable;
 
 /**
  * @OA\Schema(
- *     schema="GetAccountResponse"
+ *     schema="CreateDepositResponse"
  * )
  */
-class GetAccountResult implements JsonSerializable
+class CreateDepositResult implements JsonSerializable
 {
     private AccountDTO $account;
 

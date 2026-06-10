@@ -24,7 +24,7 @@ class CreateAccountValidator extends RequestValidation
             ],
             'balance' => [
                 new Assert\Type(type: 'numeric'),
-                new Assert\GreaterThan(value: 0),
+                new Assert\GreaterThanOrEqual(value: 0),
             ],
         ]);
     }

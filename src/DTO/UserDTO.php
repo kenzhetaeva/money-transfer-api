@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
-use App\Entity\Account;
+use App\Entity\User;
 use DateTimeImmutable;
 use JsonSerializable;
 
-class AccountDTO extends BaseAccountDTO implements JsonSerializable
+class UserDTO extends BaseUserDTO implements JsonSerializable
 {
     /**
      * @OA\Property(
      *     property="id",
      *     type="integer",
-     *     description="Id of account",
+     *     description="Id of user",
      *     example=1
      * )
      */
@@ -24,22 +24,21 @@ class AccountDTO extends BaseAccountDTO implements JsonSerializable
      * @OA\Property(
      *     property="createdAt",
      *     type="string",
-     *     description="Account creation date",
+     *     description="User creation date",
      *     example="2021-11-15T06:36:19+00:00"
      * )
      */
     private $createdAt;
 
-    public function __construct(Account $account)
+    public function __construct(User $user)
     {
         parent::__construct(
-            $account->getUser()->getId(),
-            $account->getCurrency(),
-            $account->getBalance()
+            $user->getName(),
+            $user->getEmail(),
         );
 
-        $this->id = $account->getId();
-        $this->createdAt = $account->getCreatedAt();
+        $this->id = $user->getId();
+        $this->createdAt = $user->getCreatedAt();
     }
 
     public function getId(): int
@@ -56,9 +55,8 @@ class AccountDTO extends BaseAccountDTO implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'userId' => $this->userId,
-            'currency' => $this->currency,
-            'balance' => $this->balance,
+            'name' => $this->name,
+            'email' => $this->email,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
     }
