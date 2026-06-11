@@ -11,7 +11,7 @@ interface TransactionsRepositoryInterface
     /**
      * @return Transaction[]
      */
-    public function findByAccountId(int $accountId): array;
+    public function findByAccountId(int $accountId, int $limit, int $offset): array;
 
     public function createTransaction(Transaction $transaction);
 }
