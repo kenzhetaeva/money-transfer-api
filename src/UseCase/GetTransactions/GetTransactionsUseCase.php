@@ -32,7 +32,13 @@ class GetTransactionsUseCase
             throw AccountNotFoundException::create($command->getAccountId());
         }
 
-        $transactions = $this->transactionsRepository->findByAccountId($command->getAccountId());
+        $offset = $command->getPerPage() * ($command->getPage() - 1);
+
+        $transactions = $this->transactionsRepository->findByAccountId(
+            $command->getAccountId(),
+            $command->getPerPage(),
+            $offset,
+        );
 
         return new GetTransactionsResult($transactions);
     }

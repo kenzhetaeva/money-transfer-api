@@ -17,7 +17,7 @@ class TransactionsRepository implements TransactionsRepositoryInterface
     /**
      * @return Transaction[]
      */
-    public function findByAccountId(int $accountId): array
+    public function findByAccountId(int $accountId, int $limit, int $offset): array
     {
         return $this->entityManager
             ->getRepository(Transaction::class)
@@ -25,6 +25,8 @@ class TransactionsRepository implements TransactionsRepositoryInterface
             ->where('a.fromAccount = :accountId')
             ->orWhere('a.toAccount = :accountId')
             ->setParameter('accountId', $accountId)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->getQuery()
             ->getResult();
     }
